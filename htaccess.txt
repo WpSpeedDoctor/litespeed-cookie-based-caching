@@ -1,0 +1,24 @@
+#sets rule to cache different version of content (vary)
+
+#The value of cookie "zip" is the vary of the URL
+CacheLookup on
+RewriteCond %{HTTP_COOKIE} ^.*zip.*$ [nc]
+RewriteRule .? - [E=Cache-Vary:zip]
+
+#########################################################################
+
+#Only if cookie "zip" has value "123" creates the vary of the URL
+CacheLookup on
+RewriteCond %{HTTP_COOKIE} ^.*zip=123.*$ [nc]
+RewriteRule .? - [E=Cache-Vary:zip]
+
+#########################################################################
+
+
+#multiple cookies creates the vary
+CacheLookup on
+#The value of cookie "zip" and "cdn" is vary of the URL
+RewriteCond %{HTTP_COOKIE} ^.*zip.*$|cdn.*$ [nc]
+RewriteRule .* - [E=Cache-Control:no-autoflush]
+RewriteRule .* - [E="cache-vary:zip,cdn"]
+
